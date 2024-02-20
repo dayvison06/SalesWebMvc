@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
 using System.Linq;
+using System.ComponentModel.DataAnnotations;
 
 namespace SalesWebMvc.Models
 {
