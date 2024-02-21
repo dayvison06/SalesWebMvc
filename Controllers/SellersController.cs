@@ -23,6 +23,7 @@ namespace SalesWebMvc.Controllers
 
 
 
+		// Ação de Criar dados
 
 		public IActionResult Create()
 		{
@@ -33,10 +34,20 @@ namespace SalesWebMvc.Controllers
 
 		}
 
+		// Ação de Criar dados POST
+
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public IActionResult Create(Seller seller)
 		{
+			// Impede a criação de campo vazio
+			if (!ModelState.IsValid)
+			{
+				var departaments = _departamentService.FindAll();
+				var viewModel = new SellerFormViewModel { Seller= seller, Departaments = departaments };
+				return View(viewModel);
+			}
+
 			_sellerService.Insert(seller);
 			return RedirectToAction(nameof(Index));
 		}
@@ -48,6 +59,8 @@ namespace SalesWebMvc.Controllers
 
 			return View(list);
 		}
+
+		// Ação de deletar dados
 
 		public IActionResult Delete(int? id)
 		{
@@ -65,6 +78,9 @@ namespace SalesWebMvc.Controllers
 
 			return View(obj);
 		}
+
+		// Ação de deletar dados POST
+
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public IActionResult Delete(int id)
@@ -72,6 +88,8 @@ namespace SalesWebMvc.Controllers
 			_sellerService.Remove(id);
 			return RedirectToAction(nameof(Index));
 		}
+
+		// Ação de exibir dados
 
 		public IActionResult Details(int? id)
 		{
@@ -90,6 +108,8 @@ namespace SalesWebMvc.Controllers
 			return View(obj);
 		}
 
+
+		// Ação de atualizar dados
 
 		public IActionResult Edit(int? id)
 		{
@@ -112,10 +132,20 @@ namespace SalesWebMvc.Controllers
 
 		}
 
+		// Ação de atualizar dados com POST
+
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public IActionResult Edit(int id, Seller seller)
 		{
+			// Impede a atualização com campo vazio
+			if (!ModelState.IsValid)
+			{
+				var departaments = _departamentService.FindAll();
+				var viewModel = new SellerFormViewModel { Seller = seller, Departaments = departaments };
+				return View(viewModel);
+			}
+
 			if (id != seller.Id)
 			{
 				return RedirectToAction(nameof(Error), new { message = "Id mismatch" });
